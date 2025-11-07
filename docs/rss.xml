@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>亦寻个人博客</title><link>https://yixunblog.github.io</link><description>亦寻个人技术分享博客，感谢github支持</description><copyright>亦寻个人博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/242532040?v=4</url><title>avatar</title><link>https://yixunblog.github.io</link></image><lastBuildDate>Fri, 07 Nov 2025 05:57:02 +0000</lastBuildDate><managingEditor>亦寻个人博客</managingEditor><ttl>60</ttl><webMaster>亦寻个人博客</webMaster><item><title>越权漏洞-水平越权和垂直越权</title><link>https://yixunblog.github.io/post/yue-quan-lou-dong---shui-ping-yue-quan-he-chui-zhi-yue-quan.html</link><description>#### **越权概要**
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>亦寻个人博客</title><link>https://yixunblog.github.io</link><description>亦寻个人技术分享博客，感谢github支持</description><copyright>亦寻个人博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/242532040?v=4</url><title>avatar</title><link>https://yixunblog.github.io</link></image><lastBuildDate>Fri, 07 Nov 2025 06:11:55 +0000</lastBuildDate><managingEditor>亦寻个人博客</managingEditor><ttl>60</ttl><webMaster>亦寻个人博客</webMaster><item><title>越权漏洞-水平越权和垂直越权</title><link>https://yixunblog.github.io/post/yue-quan-lou-dong---shui-ping-yue-quan-he-chui-zhi-yue-quan.html</link><description>#### **越权概要**
 &lt;font style='color:rgb(255, 0, 1);'&gt;越权漏洞又分为平行越权，垂直越权和交叉越权。</description><guid isPermaLink="true">https://yixunblog.github.io/post/yue-quan-lou-dong---shui-ping-yue-quan-he-chui-zhi-yue-quan.html</guid><pubDate>Fri, 07 Nov 2025 05:56:23 +0000</pubDate></item><item><title>jwt漏洞利用参考笔记</title><link>https://yixunblog.github.io/post/jwt-lou-dong-li-yong-can-kao-bi-ji.html</link><description>#### jwt漏洞利用参考文章
 https://blog.csdn.net/qingzhantianxia/article/details/129104228
 
@@ -55,9 +55,7 @@ base64解密
 #### **xml基础知识**
 &lt;font style='color:rgb(243, 50, 50);'&gt;可扩展标记语言&lt;/font&gt;
 
-XML被设计用来传输和存储数据。</description><guid isPermaLink="true">https://yixunblog.github.io/post/XXE-lou-dong-ji-chu.html</guid><pubDate>Fri, 07 Nov 2025 05:18:02 +0000</pubDate></item><item><title>SRC逻辑漏洞总结</title><link>https://yixunblog.github.io/post/SRC-luo-ji-lou-dong-zong-jie.html</link><description>[&lt;font style='color:rgb(0, 56, 132);'&gt;https://www.bafangwy.com/study?courseNo=721§ionNo=76132&lt;/font&gt;](https://www.bafangwy.com/study?courseNo=721&amp;sectionNo=76132)
-
-#### **注册：**
+XML被设计用来传输和存储数据。</description><guid isPermaLink="true">https://yixunblog.github.io/post/XXE-lou-dong-ji-chu.html</guid><pubDate>Fri, 07 Nov 2025 05:18:02 +0000</pubDate></item><item><title>SRC逻辑漏洞总结</title><link>https://yixunblog.github.io/post/SRC-luo-ji-lou-dong-zong-jie.html</link><description>#### **注册：**
 短信轰炸 
 
 验证码安全问题 

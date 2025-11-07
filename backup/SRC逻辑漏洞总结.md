@@ -1,5 +1,3 @@
-[<font style="color:rgb(0, 56, 132);">https://www.bafangwy.com/study?courseNo=721§ionNo=76132</font>](https://www.bafangwy.com/study?courseNo=721&sectionNo=76132)
-
 #### **注册：**
 短信轰炸 
 
