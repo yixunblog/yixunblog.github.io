@@ -40,21 +40,6 @@ CSRF是指利用受害者尚未失效的身份认证信息（ cookie、会话
 
 ![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364503-87b81288-9f80-4a41-9661-39207929be5c.png)
 
-#### **案例演示：**
-下面的两个.zip文件就是环境在小皮中创建网站
-
-![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364078-651c73d9-5ceb-4361-aec2-6b0679f7f19a.png)
-
-<font style='color:rgb(243, 50, 50);'>仿真CSRF练习靶场</font>
-
-通过cookies信息来制造跨站请求伪造
-
-先通过index.html登陆入银行
-
-用户名1100，密码123456
-
-再打开http://localhost/bank/exciting.html
-
 。">
 <meta property="og:title" content="CSRF漏洞-测试文章">
 <meta property="og:description" content="### **课程大纲**
@@ -86,21 +71,6 @@ CSRF是指利用受害者尚未失效的身份认证信息（ cookie、会话
 ![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364074-e2053d63-02cb-43ac-a327-18af838e943e.png)
 
 ![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364503-87b81288-9f80-4a41-9661-39207929be5c.png)
-
-#### **案例演示：**
-下面的两个.zip文件就是环境在小皮中创建网站
-
-![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364078-651c73d9-5ceb-4361-aec2-6b0679f7f19a.png)
-
-<font style='color:rgb(243, 50, 50);'>仿真CSRF练习靶场</font>
-
-通过cookies信息来制造跨站请求伪造
-
-先通过index.html登陆入银行
-
-用户名1100，密码123456
-
-再打开http://localhost/bank/exciting.html
 
 。">
 <meta property="og:type" content="article">
@@ -179,15 +149,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>等信息），诱骗其点击恶意链接或者访问包含攻击代码的页面，在受害人不知情的情况下</p>
 <h5><strong>CSRF实现流程</strong></h5>
 <p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/38e3a0f02a0b6f629e293e79e73a8159c70dd7800c2df62296dd7ad539db5de6/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323438353336343037342d65323035336436332d303263622d343361632d613332372d3138616638333865393433652e706e67"><img src="https://camo.githubusercontent.com/38e3a0f02a0b6f629e293e79e73a8159c70dd7800c2df62296dd7ad539db5de6/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323438353336343037342d65323035336436332d303263622d343361632d613332372d3138616638333865393433652e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364074-e2053d63-02cb-43ac-a327-18af838e943e.png" style="max-width: 100%;"></a></p>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/45e8470f4d0c646ec8cd8a46745f678d10cd7efabd8397b4bca144642873b60e/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323438353336343530332d38376238313238382d396638302d346134312d393636312d3339323037393239626535632e706e67"><img src="https://camo.githubusercontent.com/45e8470f4d0c646ec8cd8a46745f678d10cd7efabd8397b4bca144642873b60e/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323438353336343530332d38376238313238382d396638302d346134312d393636312d3339323037393239626535632e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364503-87b81288-9f80-4a41-9661-39207929be5c.png" style="max-width: 100%;"></a></p>
-<h4><strong>案例演示：</strong></h4>
-<p>下面的两个.zip文件就是环境在小皮中创建网站</p>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/4fb4e694f50ff2fbb8c86cce127927037df74ca771b4c40868636791105e9fc0/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323438353336343037382d36353163373364392d356365622d343336312d616563322d3662303637396637663139612e706e67"><img src="https://camo.githubusercontent.com/4fb4e694f50ff2fbb8c86cce127927037df74ca771b4c40868636791105e9fc0/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323438353336343037382d36353163373364392d356365622d343336312d616563322d3662303637396637663139612e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364078-651c73d9-5ceb-4361-aec2-6b0679f7f19a.png" style="max-width: 100%;"></a></p>
-<p>仿真CSRF练习靶场</p>
-<p>通过cookies信息来制造跨站请求伪造</p>
-<p>先通过index.html登陆入银行</p>
-<p>用户名1100，密码123456</p>
-<p>再打开<a href="http://localhost/bank/exciting.html" rel="nofollow">http://localhost/bank/exciting.html</a></p></div>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/45e8470f4d0c646ec8cd8a46745f678d10cd7efabd8397b4bca144642873b60e/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323438353336343530332d38376238313238382d396638302d346134312d393636312d3339323037393239626535632e706e67"><img src="https://camo.githubusercontent.com/45e8470f4d0c646ec8cd8a46745f678d10cd7efabd8397b4bca144642873b60e/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323438353336343530332d38376238313238382d396638302d346134312d393636312d3339323037393239626535632e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364503-87b81288-9f80-4a41-9661-39207929be5c.png" style="max-width: 100%;"></a></p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>

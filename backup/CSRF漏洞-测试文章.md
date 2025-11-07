@@ -28,18 +28,3 @@ CSRF是指利用受害者尚未失效的身份认证信息（ cookie、会话
 
 ![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364503-87b81288-9f80-4a41-9661-39207929be5c.png)
 
-#### **案例演示：**
-下面的两个.zip文件就是环境在小皮中创建网站
-
-![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364078-651c73d9-5ceb-4361-aec2-6b0679f7f19a.png)
-
-<font style="color:rgb(243, 50, 50);">仿真CSRF练习靶场</font>
-
-通过cookies信息来制造跨站请求伪造
-
-先通过index.html登陆入银行
-
-用户名1100，密码123456
-
-再打开http://localhost/bank/exciting.html
-

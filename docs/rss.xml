@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>亦寻个人博客</title><link>https://yixunblog.github.io</link><description>亦寻个人技术分享博客，感谢github支持</description><copyright>亦寻个人博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/242532040?v=4</url><title>avatar</title><link>https://yixunblog.github.io</link></image><lastBuildDate>Fri, 07 Nov 2025 03:19:44 +0000</lastBuildDate><managingEditor>亦寻个人博客</managingEditor><ttl>60</ttl><webMaster>亦寻个人博客</webMaster><item><title>CSRF漏洞-测试文章</title><link>https://yixunblog.github.io/post/CSRF-lou-dong---ce-shi-wen-zhang.html</link><description>### **课程大纲**
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>亦寻个人博客</title><link>https://yixunblog.github.io</link><description>亦寻个人技术分享博客，感谢github支持</description><copyright>亦寻个人博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/242532040?v=4</url><title>avatar</title><link>https://yixunblog.github.io</link></image><lastBuildDate>Fri, 07 Nov 2025 03:22:01 +0000</lastBuildDate><managingEditor>亦寻个人博客</managingEditor><ttl>60</ttl><webMaster>亦寻个人博客</webMaster><item><title>CSRF漏洞-测试文章</title><link>https://yixunblog.github.io/post/CSRF-lou-dong---ce-shi-wen-zhang.html</link><description>### **课程大纲**
 1、什么是CSRF漏洞？
 
 2、CSRF案例分析
@@ -28,21 +28,6 @@ CSRF是指利用受害者尚未失效的身份认证信息（ cookie、会话
 ![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364074-e2053d63-02cb-43ac-a327-18af838e943e.png)
 
 ![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364503-87b81288-9f80-4a41-9661-39207929be5c.png)
-
-#### **案例演示：**
-下面的两个.zip文件就是环境在小皮中创建网站
-
-![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762485364078-651c73d9-5ceb-4361-aec2-6b0679f7f19a.png)
-
-&lt;font style='color:rgb(243, 50, 50);'&gt;仿真CSRF练习靶场&lt;/font&gt;
-
-通过cookies信息来制造跨站请求伪造
-
-先通过index.html登陆入银行
-
-用户名1100，密码123456
-
-再打开http://localhost/bank/exciting.html
 
 。</description><guid isPermaLink="true">https://yixunblog.github.io/post/CSRF-lou-dong---ce-shi-wen-zhang.html</guid><pubDate>Fri, 07 Nov 2025 03:19:19 +0000</pubDate></item><item><title>测试文章</title><link>https://yixunblog.github.io/post/ce-shi-wen-zhang.html</link><description># 测试文章1
 
