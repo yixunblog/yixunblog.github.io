@@ -7,7 +7,6 @@ DVWA靶场通关-已完结（可参考）  [<font style="color:#003884;">https:/
 ** (XSS)(基于 DOM 的跨站脚本)DOM Based Cross Site Scripting**
 
 **Low（低级）**
-
 <font style="color:#f33232;">跨站脚本攻击，是指攻击者在页面中注入恶意的脚本代码，当受害者访问该页面时，恶意代码会在其浏览器上执行，需要强调的是，XSS不仅仅限于JavaScript，还包括flash等其它脚本语言。</font>
 
 DOM是一个与平台、编程语言无关的接口，它允许程序或脚本动态地访问和更新文档内容、结构和样式，处理后的结果能够成为显示页面的一部分。DOM中有很多对象，其中一些是用户可以操纵的，如uRI ，location，refelTer等。客户端的脚本程序可以通过DOM动态地检查和修改页面内容，<font style="color:#ff0001;">它不依赖于提交数据到服务器端，而从客户端获得DOM中的数据在本地执行，如果DOM中的数据没有经过严格确认，就会产生DOM—based XSS漏洞。</font>
@@ -26,9 +25,10 @@ DOM是一个与平台、编程语言无关的接口，它允许程序或脚本�
 
 **注入代码**
 
-···
+```
 ?default=</option></select><img src=x onerror=alert(1)>
-···
+```
+
 ![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762496438307-57376f53-9303-4087-a116-7a656d34c0c8.png)
 
 **High（高级）**
