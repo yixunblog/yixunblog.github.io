@@ -1,5 +1,44 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>亦寻个人博客</title><link>https://yixunblog.github.io</link><description>亦寻个人技术分享博客，感谢github支持</description><copyright>亦寻个人博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/242532040?v=4</url><title>avatar</title><link>https://yixunblog.github.io</link></image><lastBuildDate>Fri, 07 Nov 2025 05:18:30 +0000</lastBuildDate><managingEditor>亦寻个人博客</managingEditor><ttl>60</ttl><webMaster>亦寻个人博客</webMaster><item><title>XXE漏洞基础</title><link>https://yixunblog.github.io/post/XXE-lou-dong-ji-chu.html</link><description>可参考网址：
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>亦寻个人博客</title><link>https://yixunblog.github.io</link><description>亦寻个人技术分享博客，感谢github支持</description><copyright>亦寻个人博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/242532040?v=4</url><title>avatar</title><link>https://yixunblog.github.io</link></image><lastBuildDate>Fri, 07 Nov 2025 05:37:17 +0000</lastBuildDate><managingEditor>亦寻个人博客</managingEditor><ttl>60</ttl><webMaster>亦寻个人博客</webMaster><item><title>jwt漏洞利用参考笔记</title><link>https://yixunblog.github.io/post/jwt-lou-dong-li-yong-can-kao-bi-ji.html</link><description>#### jwt漏洞利用参考文章
+https://blog.csdn.net/qingzhantianxia/article/details/129104228
+
+****
+
+python jwt_tool.py 要解密的内容
+
+![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762493404322-41d1e21f-b1fd-4586-bdb9-3f0adf8fea69.png)
+
+**解密好的效果**
+
+![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762493404292-86d2c65b-91cb-4883-86dc-2000544b8ead.png)
+
+**&lt;font style='color:rgb(255, 0, 1);'&gt;jwt使用 . 点进行隔开&lt;/font&gt;**
+
+**&lt;font style='color:rgb(255, 0, 1);'&gt;分别是header payload signature这三个部分&lt;/font&gt;**
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6ImFkbWluIiwicGFzc3dvcmQiOiIyYWM5Y2I3ZGMwMmIzYzAwODNlYjcwODk4ZTU0OWI2MyIsInVzZXJuYW1lIjoiam9lIn0.6j3NrK-0C7K8gmaWeB9CCyZuQKfvVEAl4KhitRN2p5k
+
+#### **bp插件**
+
+
+![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762493404695-4087db14-9e2f-4310-aa86-c118a3679a27.png)
+
+![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762493404608-647bea61-152d-4486-854a-daf3f45b968d.png)
+
+![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762493404663-b6634531-6d88-41f6-82d3-9272026e832c.png)
+
+![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762493404680-46e83db6-eda0-4a96-b054-97ec61831767.png)
+
+![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762493404585-cb7c1e9c-c042-416d-92e3-927f5cb9823e.png)
+
+bp插件安装成功之后上面出现json web tokens
+
+#### **靶场**
+base64解密 
+
+![](https://cdn.nlark.com/yuque/0/2025/png/39223720/1762493405334-2e8e48d2-977d-4d7f-8f34-2f1510d2e332.png)
+
+。</description><guid isPermaLink="true">https://yixunblog.github.io/post/jwt-lou-dong-li-yong-can-kao-bi-ji.html</guid><pubDate>Fri, 07 Nov 2025 05:36:46 +0000</pubDate></item><item><title>XXE漏洞基础</title><link>https://yixunblog.github.io/post/XXE-lou-dong-ji-chu.html</link><description>可参考网址：
 
 [&lt;font style='color:rgb(0, 56, 132);'&gt;(124条消息) XXE漏洞原理/防御_士别三日wyx的博客-CSDN博客_xxe原理利用防御&lt;/font&gt;](https://blog.csdn.net/wangyuxiang946/article/details/118797832)
 
