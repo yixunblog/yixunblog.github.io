@@ -1,5 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>亦寻个人博客</title><link>https://yixunblog.github.io</link><description>亦寻个人技术分享博客，感谢github支持</description><copyright>亦寻个人博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/242532040?v=4</url><title>avatar</title><link>https://yixunblog.github.io</link></image><lastBuildDate>Fri, 07 Nov 2025 03:27:34 +0000</lastBuildDate><managingEditor>亦寻个人博客</managingEditor><ttl>60</ttl><webMaster>亦寻个人博客</webMaster><item><title>SRC逻辑漏洞总结</title><link>https://yixunblog.github.io/post/SRC-luo-ji-lou-dong-zong-jie.html</link><description>[&lt;font style='color:rgb(0, 56, 132);'&gt;https://www.bafangwy.com/study?courseNo=721§ionNo=76132&lt;/font&gt;](https://www.bafangwy.com/study?courseNo=721&amp;sectionNo=76132)
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>亦寻个人博客</title><link>https://yixunblog.github.io</link><description>亦寻个人技术分享博客，感谢github支持</description><copyright>亦寻个人博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/242532040?v=4</url><title>avatar</title><link>https://yixunblog.github.io</link></image><lastBuildDate>Fri, 07 Nov 2025 05:18:30 +0000</lastBuildDate><managingEditor>亦寻个人博客</managingEditor><ttl>60</ttl><webMaster>亦寻个人博客</webMaster><item><title>XXE漏洞基础</title><link>https://yixunblog.github.io/post/XXE-lou-dong-ji-chu.html</link><description>可参考网址：
+
+[&lt;font style='color:rgb(0, 56, 132);'&gt;(124条消息) XXE漏洞原理/防御_士别三日wyx的博客-CSDN博客_xxe原理利用防御&lt;/font&gt;](https://blog.csdn.net/wangyuxiang946/article/details/118797832)
+
+#### **课程大纲**
+1、XML基础知识
+
+2、什么是XXE
+
+3、XXE利用方式
+
+4、XXE防御
+
+#### **xml基础知识**
+&lt;font style='color:rgb(243, 50, 50);'&gt;可扩展标记语言&lt;/font&gt;
+
+XML被设计用来传输和存储数据。</description><guid isPermaLink="true">https://yixunblog.github.io/post/XXE-lou-dong-ji-chu.html</guid><pubDate>Fri, 07 Nov 2025 05:18:02 +0000</pubDate></item><item><title>SRC逻辑漏洞总结</title><link>https://yixunblog.github.io/post/SRC-luo-ji-lou-dong-zong-jie.html</link><description>[&lt;font style='color:rgb(0, 56, 132);'&gt;https://www.bafangwy.com/study?courseNo=721§ionNo=76132&lt;/font&gt;](https://www.bafangwy.com/study?courseNo=721&amp;sectionNo=76132)
 
 #### **注册：**
 短信轰炸 
