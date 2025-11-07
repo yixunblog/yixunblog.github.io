@@ -222,7 +222,9 @@ $message = htmlspecialchars( $message );
 
 使用BP改name即可
 
+```
 <img src=1 onerror=alert(1)>
+```
 
 **Impassible**
 
