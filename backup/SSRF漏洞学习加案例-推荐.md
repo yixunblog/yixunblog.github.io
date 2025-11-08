@@ -1,5 +1,5 @@
 #### <font style="color:rgba(0, 0, 0, 0.85);">0x01 SSRF漏洞简介</font>
-**<font style="color:rgb(102, 102, 102);">1</font>****<font style="color:#000000;">.SSRF漏洞概述</font>**<font style="color:#000000;">  
+**1.SSRF漏洞概述**
 </font><font style="color:#000000;">SSRF(Server-Side Request Forgery:服务器端请求伪造) 是一种由攻击者构造形成由服务端发起请求的一个安全漏洞。  
 </font><font style="color:#000000;">一般情况下，SSRF攻击的目标是从外网无法访问的**内部系统**。（因为它是由服务端发起的，所以它能够请求到与它相连而与外网隔离的内网。也就是说可以利用一个网络请求的服务，当作跳板进行攻击）</font>
 
